@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+:root {
+  --background: #F6F2EB;
+  --foreground: #4D5A46;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-ruba-cream: #F6F2EB;
+  --color-ruba-green: #A8B39A;
+  --color-ruba-earth: #B89B7C;
+  --color-ruba-salmon: #E9B7A1;
+  --color-ruba-dark: #4D5A46;
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-playfair);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), sans-serif;
+}
