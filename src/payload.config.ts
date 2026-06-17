@@ -1,71 +1,59 @@
-import { buildConfig } from 'payload';
-import { postgresAdapter } from '@payloadcms/db-postgres';
-import { lexicalEditor } from '@payloadcms/richtext-lexical';
-import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import sharp from 'sharp';
+import { buildConfig } from 'payload'
+import path from 'path'
+import { postgresAdapter } from '@payloadcms/db-postgres'
+import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import sharp from 'sharp'
 
-import { Categories } from './collections/Categories';
-import { Occasions } from './collections/Occasions';
-import { Recipients } from './collections/Recipients';
-import { Products } from './collections/Products';
-import { Workshops } from './collections/Workshops';
-import { CorporateProjects } from './collections/CorporateProjects';
-import { Coupons } from './collections/Coupons';
-import { Orders } from './collections/Orders';
-import { Pages } from './collections/Pages';
-import { SiteSettings } from './globals/SiteSettings';
-const filename = fileURLToPath(import.meta.url);
-const dirname = path.dirname(filename);
+// Collections
+import { Albums } from './collections/Albums'
+import { Products } from './collections/Products'
+import { Coupons } from './collections/Coupons'
+import { Blogs } from './collections/Blogs'
+import { Workshops } from './collections/Workshops'
+import { Members } from './collections/Members'
+import { Orders } from './collections/Orders'
+import { Subscribers } from './collections/Subscribers'
+import { ContactMessages } from './collections/ContactMessages'
+
+// Globals
+import { HomePage } from './globals/HomePage'
+import { About } from './globals/About'
+import { Kvkk } from './globals/Kvkk'
+import { Privacy } from './globals/Privacy'
+import { Refunds } from './globals/Refunds'
+import { SalesAgreement } from './globals/SalesAgreement'
+import { Contact } from './globals/Contact'
+import { BankAccounts } from './globals/BankAccounts'
 
 export default buildConfig({
+  secret: process.env.PAYLOAD_SECRET || 'fallback-secret',
   admin: {
     user: 'users',
-    meta: {
-      titleSuffix: '- Ruba Çiçekçilik Yönetim',
-    },
-    components: {
-      graphics: {
-        Logo: '@/components/admin/Logo.tsx#Logo',
-        Icon: '@/components/admin/Logo.tsx#Icon',
-      },
+    importMap: {
+      baseDir: path.resolve(process.cwd(), 'src'),
     },
   },
   collections: [
     {
       slug: 'users',
-      auth: true,
+      labels: { singular: 'Yönetici', plural: 'Yöneticiler' },
       admin: {
         useAsTitle: 'email',
+        group: 'Bilgi Deposu',
       },
-      fields: [
-        // Ekstra rol (Admin/User) vb. alanları buraya ekleyeceğiz.
-      ],
+      auth: true,
+      fields: [],
     },
     {
       slug: 'media',
+      labels: { singular: 'Medya', plural: 'Medya (Tüm Görseller)' },
+      admin: { group: 'Site Yönetimi' },
       upload: {
-        disableLocalStorage: true, // Sadece Blob'a gitsin
+        disableLocalStorage: true,
         imageSizes: [
-          {
-            name: 'thumbnail',
-            width: 400,
-            height: 300,
-            position: 'centre',
-          },
-          {
-            name: 'card',
-            width: 768,
-            height: 1024,
-            position: 'centre',
-          },
-          {
-            name: 'hero',
-            width: 1920,
-            height: 1080,
-            position: 'centre',
-          },
+          { name: 'thumbnail', width: 400, height: 300, position: 'centre' },
+          { name: 'card', width: 768, height: 1024, position: 'centre' },
+          { name: 'hero', width: 1920, height: 1080, position: 'centre' },
         ],
         adminThumbnail: 'thumbnail',
       },
@@ -78,37 +66,31 @@ export default buildConfig({
         },
       ],
     },
-    Categories,
-    Occasions,
-    Recipients,
+    Albums,
     Products,
-    Workshops,
-    CorporateProjects,
     Coupons,
+    Blogs,
+    Workshops,
+    Members,
     Orders,
-    Pages,
+    Subscribers,
+    ContactMessages,
   ],
   globals: [
-    SiteSettings,
+    HomePage,
+    About,
+    Kvkk,
+    Privacy,
+    Refunds,
+    SalesAgreement,
+    Contact,
+    BankAccounts,
   ],
   editor: lexicalEditor({}),
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URL || '',
+      connectionString: process.env.DATABASE_URI || '',
     },
   }),
-  plugins: [
-    vercelBlobStorage({
-      enabled: true,
-      collections: {
-        media: true,
-      },
-      token: process.env.BLOB_READ_WRITE_TOKEN || '',
-    }),
-  ],
-  secret: process.env.PAYLOAD_SECRET || 'ruba-secret',
   sharp,
-  typescript: {
-    outputFile: path.resolve(dirname, 'payload-types.ts'),
-  },
-});
+})

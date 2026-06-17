@@ -2,13 +2,12 @@ import { CollectionConfig } from 'payload'
 
 export const Coupons: CollectionConfig = {
   slug: 'coupons',
+  labels: { singular: 'Kupon', plural: 'Kuponlar' },
   admin: {
     useAsTitle: 'code',
-    group: 'E-Ticaret',
+    group: 'Ürün Yönetimi',
   },
-  access: {
-    read: () => true,
-  },
+  access: { read: () => true },
   fields: [
     { name: 'code', type: 'text', required: true, unique: true, label: 'Kupon Kodu' },
     {
@@ -22,8 +21,6 @@ export const Coupons: CollectionConfig = {
       label: 'İndirim Tipi',
     },
     { name: 'discountValue', type: 'number', required: true, label: 'İndirim Değeri' },
-    { name: 'minOrderAmount', type: 'number', label: 'Minimum Sepet Tutarı (₺)' },
-    { name: 'expiryDate', type: 'date', label: 'Son Geçerlilik Tarihi' },
     { name: 'isActive', type: 'checkbox', defaultValue: true, label: 'Aktif mi?' },
   ],
 }
