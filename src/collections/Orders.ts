@@ -43,5 +43,9 @@ export const Orders: CollectionConfig = {
       ],
     },
     { name: 'totalAmount', type: 'number', required: true, label: 'Toplam Tutar (₺)', admin: { readOnly: true } },
+    { name: 'contactName', type: 'text', label: 'Alıcı Adı Soyadı', admin: { readOnly: true } },
+    { name: 'contactPhone', type: 'text', label: 'İletişim Numarası', admin: { readOnly: true } },
+    { name: 'shippingAddress', type: 'textarea', label: 'Teslimat Adresi', admin: { readOnly: true } },
+    { name: 'orderNote', type: 'textarea', label: 'Çiçek Notu / Sipariş Notu', admin: { readOnly: true } },
   ],
 }
